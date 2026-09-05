@@ -1,0 +1,18 @@
+<form>
+  <fieldset>
+    <legend>Endereço de entrega</legend>
+
+    <label for="cep">CEP</label>
+    <input type="text" id="cep" name="cep" inputmode="numeric" required
+           aria-describedby="cep-erro">
+    <span id="cep-erro" role="alert">CEP inválido. Use o formato 00000-000.</span>
+
+    <label for="email">E-mail</label>
+    <input type="email" id="email" name="email" required>
+
+    <label for="telefone">Telefone</label>
+    <input type="tel" id="telefone" name="telefone">
+  </fieldset>
+
+  <button type="submit">Enviar</button>
+</form>
