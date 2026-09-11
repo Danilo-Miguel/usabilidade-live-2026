@@ -1,0 +1,471 @@
+<!--
+  AULA: FRAMEWORKS CSS — BOOTSTRAP 5
+  ==================================
+  Este arquivo é comentado passo a passo para servir de guia durante a aula.
+  Leia junto com o bootstrap.md (apostila detalhada de cada classe).
+
+  Abra este arquivo direto no navegador: File > Open, ou duplo clique nele.
+-->
+<!DOCTYPE html>
+<!--
+  <!DOCTYPE html> avisa o navegador que este documento usa o HTML5 (o padrão
+  atual). Sem isso, navegadores antigos podem renderizar em "modo estranho"
+  (quirks mode). Isso é HTML puro, nada de Bootstrap ainda.
+-->
+<html lang="pt-BR">
+<!--
+  <html>: elemento raiz, envolve toda a página.
+  lang="pt-BR": diz o idioma do conteúdo (ajuda leitores de tela e tradutores
+  automáticos do navegador). Também HTML puro.
+-->
+<head>
+  <!-- <head>: metadados da página. Nada aqui aparece diretamente na tela. -->
+
+  <meta charset="UTF-8">
+  <!-- Define a codificação de caracteres. UTF-8 = suporta acentos, ç, emoji, etc. -->
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!--
+    ESSENCIAL para frameworks responsivos. Sem esta linha, o Bootstrap não
+    consegue detectar corretamente breakpoints em celulares — o navegador
+    mobile assumiria uma largura de tela "de desktop" (~980px) e a página
+    apareceria minúscula, sem responsividade real.
+    width=device-width  -> use a largura real do aparelho.
+    initial-scale=1.0   -> não comece com zoom aplicado.
+  -->
+
+  <title>Aula Bootstrap 5</title>
+  <!-- Texto que aparece na aba do navegador. -->
+
+  <!--
+    AQUI ENTRA O BOOTSTRAP: uma única tag <link> que baixa o CSS pronto do
+    Bootstrap via CDN (Content Delivery Network — um servidor externo que
+    hospeda a biblioteca). Isso é o "instalar" o framework para esta aula.
+  -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+  >
+
+  <style>
+    /*
+      Este bloco é CSS PURO nosso (não é do Bootstrap), só para destacar as
+      caixas de explicação amarelas ao longo da página e não confundir com o
+      conteúdo de exemplo. Em uma página Bootstrap real, você normalmente
+      teria pouquíssimo CSS próprio como este.
+    */
+    .explicacao {
+      background: #fff3cd;
+      border-left: 4px solid #ffc107;
+      padding: 0.75rem 1rem;
+      margin-bottom: 1rem;
+      font-size: 0.9rem;
+    }
+    .explicacao code { background: #00000010; padding: 0 4px; }
+    section { border-bottom: 2px dashed #ccc; padding: 2rem 0; }
+  </style>
+</head>
+<body>
+  <!-- <body>: tudo que é VISÍVEL na página fica aqui dentro. -->
+
+  <!-- ======================================================
+       SEÇÃO 0 — NAVBAR (componente + JavaScript)
+       ====================================================== -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
+    <!--
+      navbar             -> classe base do menu de navegação.
+      navbar-expand-lg   -> a partir do breakpoint "lg" (>=992px) o menu fica
+                            sempre visível e horizontal; abaixo disso vira
+                            um menu "hambúrguer" retrátil.
+      navbar-dark        -> ajusta a COR DO TEXTO para tons claros (para
+                            contrastar com fundo escuro).
+      bg-dark            -> utilitário de cor de FUNDO escura.
+      mb-4               -> utilitário de espaçamento: margin-bottom grande.
+    -->
+    <div class="container-fluid">
+      <!-- container-fluid: ocupa 100% da largura da navbar (sem limite máximo). -->
+
+      <a class="navbar-brand" href="#">Aula Bootstrap</a>
+      <!-- navbar-brand: estiliza o "logo"/nome do site dentro da navbar. -->
+
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#menuPrincipal"
+        aria-controls="menuPrincipal"
+        aria-expanded="false"
+        aria-label="Abrir menu"
+      >
+        <!--
+          Este é o botão hambúrguer, só aparece em telas menores que "lg".
+          data-bs-toggle="collapse"     -> avisa o JS do Bootstrap: "eu abro
+                                            e fecho algo do tipo collapse".
+          data-bs-target="#menuPrincipal" -> qual elemento (por ID) deve
+                                            abrir/fechar ao clicar aqui.
+          aria-* -> atributos de acessibilidade (leitor de tela), não são
+                    exclusivos do Bootstrap, são HTML/ARIA padrão.
+        -->
+        <span class="navbar-toggler-icon"></span>
+        <!-- ícone do hambúrguer (3 linhas), gerado via CSS do Bootstrap. -->
+      </button>
+
+      <div class="collapse navbar-collapse" id="menuPrincipal">
+        <!--
+          collapse            -> começa escondido.
+          navbar-collapse     -> estilos específicos de menu dentro da navbar.
+          id="menuPrincipal"  -> o alvo do data-bs-target do botão acima.
+        -->
+        <ul class="navbar-nav ms-auto">
+          <!--
+            navbar-nav -> lista de links estilizada para navbar.
+            ms-auto    -> margin-start:auto -> empurra a lista toda para a
+                          DIREITA (útil quando o menu tem poucos itens).
+          -->
+          <li class="nav-item"><a class="nav-link active" href="#grid">Grid</a></li>
+          <li class="nav-item"><a class="nav-link" href="#componentes">Componentes</a></li>
+          <li class="nav-item"><a class="nav-link" href="#js">Interativos</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container">
+    <!--
+      container: moldura central com largura máxima e margens automáticas.
+      Envolve TODO o resto do conteúdo da página (fora a navbar, que
+      geralmente fica full-width).
+    -->
+
+    <!-- ======================================================
+         SEÇÃO 1 — TIPOGRAFIA E CORES
+         ====================================================== -->
+    <section id="tipografia">
+      <h2>1. Tipografia e cores</h2>
+
+      <div class="explicacao">
+        <strong>O que são <code>class</code> aqui?</strong> Cada palavra dentro
+        de <code>class="..."</code> é o NOME de uma regra CSS que já existe
+        dentro do arquivo <code>bootstrap.min.css</code> que carregamos no
+        <code>&lt;head&gt;</code>. Um elemento pode ter várias classes ao
+        mesmo tempo, separadas por espaço — cada uma aplica um pedaço do
+        visual final.
+      </div>
+
+      <h1 class="display-3 fw-bold text-primary">Título de destaque</h1>
+      <!--
+        display-3   -> tamanho gigante de título (escala de display-1 a display-6,
+                       do maior ao menor).
+        fw-bold     -> font-weight: bold (negrito).
+        text-primary -> cor do TEXTO usando a cor semântica "primary" do tema.
+      -->
+
+      <p class="lead">
+        Este é um parágrafo <code>.lead</code>: fonte um pouco maior, usado
+        como "chamada" logo abaixo de um título grande.
+      </p>
+
+      <p class="text-center text-uppercase text-secondary">
+        texto centralizado, em maiúsculas, na cor secundária
+      </p>
+      <!--
+        text-center     -> text-align: center.
+        text-uppercase  -> transforma o texto para MAIÚSCULO via CSS (o texto
+                           no código pode continuar minúsculo).
+        text-secondary  -> cor de texto semântica "secondary".
+      -->
+
+      <p>
+        <span class="bg-warning p-1">bg-warning</span>
+        <span class="bg-success text-white p-1">bg-success</span>
+        <span class="bg-danger text-white p-1">bg-danger</span>
+        <span class="bg-info p-1">bg-info</span>
+        <!--
+          bg-* -> cor de FUNDO semântica. text-white força o texto branco
+          para ter contraste em fundos escuros/saturados.
+          p-1  -> padding pequeno (ver Seção 3) só para dar um respiro visual.
+        -->
+      </p>
+    </section>
+
+    <!-- ======================================================
+         SEÇÃO 2 — GRID SYSTEM (12 colunas)
+         ====================================================== -->
+    <section id="grid">
+      <h2>2. Grid de 12 colunas</h2>
+
+      <div class="explicacao">
+        Toda linha (<code>.row</code>) tem 12 "fatias" para distribuir entre
+        as colunas (<code>.col-*</code>). O número depois do hífen é quantas
+        fatias aquela coluna ocupa. Redimensione a janela do navegador para
+        ver o próximo exemplo mudar de 3 colunas para 1 coluna no celular.
+      </div>
+
+      <div class="row g-3 text-center mb-4">
+        <!--
+          row    -> uma linha do grid (display:flex por baixo dos panos).
+          g-3    -> "gap" de tamanho 3 entre as colunas (espaço entre elas,
+                    tanto na horizontal quanto se quebrarem linha).
+          text-center, mb-4 -> só utilitários de texto/espaçamento.
+        -->
+        <div class="col-12 col-md-4">
+          <div class="bg-light border p-3">col-12 col-md-4</div>
+          <!--
+            col-12    -> no celular (padrão, "mobile first"), ocupa as 12/12
+                         fatias = largura total.
+            col-md-4  -> a partir do breakpoint md (>=768px), ocupa só 4/12
+                         (um terço da linha) — por isso 3 dessas colunas
+                         cabem lado a lado no tablet/desktop.
+          -->
+        </div>
+        <div class="col-12 col-md-4">
+          <div class="bg-light border p-3">col-12 col-md-4</div>
+        </div>
+        <div class="col-12 col-md-4">
+          <div class="bg-light border p-3">col-12 col-md-4</div>
+        </div>
+      </div>
+
+      <div class="row g-3 text-center">
+        <div class="col-8">
+          <div class="bg-primary text-white p-3">col-8 (66%)</div>
+        </div>
+        <div class="col-4">
+          <div class="bg-secondary text-white p-3">col-4 (33%)</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================
+         SEÇÃO 3 — ESPAÇAMENTO (margin / padding utilities)
+         ====================================================== -->
+    <section id="espacamento">
+      <h2>3. Espaçamento: <code>m-*</code> e <code>p-*</code></h2>
+
+      <div class="explicacao">
+        Padrão do nome: <code>{m ou p}{lado}-{tamanho 0 a 5}</code>.
+        <code>m</code>=margin (fora do elemento), <code>p</code>=padding
+        (dentro do elemento). Lado: <code>t</code> topo, <code>b</code>
+        embaixo, <code>s</code> início/esquerda, <code>e</code> fim/direita,
+        <code>x</code> horizontal, <code>y</code> vertical, ou nenhuma letra
+        = todos os lados.
+      </div>
+
+      <div class="bg-light border mb-2 p-0">p-0 (padding zero)</div>
+      <div class="bg-light border mb-2 p-2">p-2 (padding pequeno)</div>
+      <div class="bg-light border mb-2 p-4">p-4 (padding grande)</div>
+      <div class="bg-light border mb-2 mt-5">mt-5 (margin-top grande, empurra este bloco pra baixo)</div>
+
+      <div class="bg-primary text-white" style="width: 200px;" >
+        largura fixa 200px
+      </div>
+      <div class="bg-secondary text-white mx-auto mt-2" style="width: 200px;">
+        mx-auto -&gt; centralizado
+      </div>
+      <!--
+        mx-auto só centraliza porque o elemento tem largura definida
+        (style="width:200px"); sem largura fixa, o bloco já ocupa 100% e não
+        haveria espaço sobrando para "centralizar".
+      -->
+    </section>
+
+    <!-- ======================================================
+         SEÇÃO 4 — COMPONENTES: BOTÕES, CARDS, ALERTS, BADGES
+         ====================================================== -->
+    <section id="componentes">
+      <h2>4. Componentes prontos</h2>
+
+      <h4>4.1 Botões</h4>
+      <div class="explicacao">
+        <code>.btn</code> é a classe BASE (formato/cursor/padding). Sozinha
+        ela não tem cor — a cor vem de uma segunda classe, tipo
+        <code>.btn-primary</code>.
+      </div>
+      <button type="button" class="btn btn-primary me-2">btn-primary</button>
+      <button type="button" class="btn btn-success me-2">btn-success</button>
+      <button type="button" class="btn btn-outline-danger me-2">btn-outline-danger</button>
+      <button type="button" class="btn btn-primary btn-lg me-2">btn-lg</button>
+      <button type="button" class="btn btn-primary btn-sm">btn-sm</button>
+      <!-- me-2: margin-end (direita) pequena, só pra separar os botões. -->
+
+      <h4 class="mt-4">4.2 Card</h4>
+      <div class="explicacao">
+        <code>.card</code> = moldura com borda arredondada + sombra leve.
+        <code>.card-body</code> = área de conteúdo com padding interno.
+        <code>.card-title</code>/<code>.card-text</code> ajustam a tipografia
+        para o contexto (espaçamento entre título e texto).
+      </div>
+      <div class="card" style="width: 18rem;">
+        <div class="card-body">
+          <h5 class="card-title">Título do card</h5>
+          <p class="card-text">
+            Um pouco de texto de exemplo dentro do corpo do card.
+          </p>
+          <a href="#" class="btn btn-primary">Ver mais</a>
+        </div>
+      </div>
+
+      <h4 class="mt-4">4.3 Alerts</h4>
+      <div class="explicacao">
+        <code>role="alert"</code> não é do Bootstrap — é um atributo ARIA de
+        acessibilidade que faz leitores de tela anunciarem a mensagem
+        automaticamente. O Bootstrap recomenda usá-lo em conjunto com
+        <code>.alert</code>.
+      </div>
+      <div class="alert alert-success" role="alert">Sucesso! Operação concluída.</div>
+      <div class="alert alert-warning" role="alert">Atenção! Confira os dados.</div>
+      <div class="alert alert-danger" role="alert">Erro! Algo deu errado.</div>
+
+      <h4 class="mt-4">4.4 Badges</h4>
+      <p>
+        Notificações <span class="badge bg-secondary">4</span>
+        Status: <span class="badge bg-success">Ativo</span>
+      </p>
+
+      <h4 class="mt-4">4.5 Formulário</h4>
+      <div class="explicacao">
+        <code>for="email"</code> no <code>&lt;label&gt;</code> e
+        <code>id="email"</code> no <code>&lt;input&gt;</code> são HTML PURO
+        (não Bootstrap): eles precisam ser IGUAIS para que clicar no texto do
+        rótulo foque o campo automaticamente — importante para acessibilidade.
+      </div>
+      <form>
+        <div class="mb-3">
+          <label for="email" class="form-label">E-mail</label>
+          <input type="email" class="form-control" id="email" placeholder="voce@exemplo.com">
+          <!--
+            form-label   -> estilo do rótulo (espaçamento/peso da fonte).
+            form-control -> estilo padrão de campo (borda, padding, foco azul).
+          -->
+        </div>
+        <div class="mb-3">
+          <label for="senha" class="form-label">Senha</label>
+          <input type="password" class="form-control" id="senha">
+        </div>
+        <button type="submit" class="btn btn-primary">Enviar</button>
+      </form>
+    </section>
+
+    <!-- ======================================================
+         SEÇÃO 5 — FLEXBOX UTILITIES
+         ====================================================== -->
+    <section id="flex">
+      <h2>5. Utilitários de Flexbox</h2>
+      <div class="explicacao">
+        <code>.d-flex</code> equivale a <code>display:flex;</code> em CSS
+        puro. As outras classes (<code>justify-content-*</code>,
+        <code>align-items-*</code>, <code>gap-*</code>) são "atalhos" para as
+        propriedades flexbox que vocês já viram na aula de CSS puro.
+      </div>
+      <div class="d-flex justify-content-between align-items-center bg-light border p-3 gap-3">
+        <div class="bg-primary text-white p-2">Item 1</div>
+        <div class="bg-primary text-white p-2">Item 2</div>
+        <div class="bg-primary text-white p-2">Item 3</div>
+      </div>
+    </section>
+
+    <!-- ======================================================
+         SEÇÃO 6 — RESPONSIVIDADE (mostrar/esconder por tela)
+         ====================================================== -->
+    <section id="responsividade">
+      <h2>6. Mostrar/esconder por tamanho de tela</h2>
+      <div class="explicacao">
+        Redimensione a janela: o bloco azul só aparece em telas médias (md)
+        pra cima; o bloco laranja só aparece no celular.
+      </div>
+      <div class="d-none d-md-block bg-primary text-white p-3 mb-2">
+        Só visível a partir do breakpoint md (tablet/desktop)
+      </div>
+      <div class="d-block d-md-none bg-warning p-3">
+        Só visível ABAIXO do breakpoint md (celular)
+      </div>
+    </section>
+
+    <!-- ======================================================
+         SEÇÃO 7 — COMPONENTES QUE PRECISAM DE JAVASCRIPT
+         ====================================================== -->
+    <section id="js">
+      <h2>7. Componentes interativos (precisam do bootstrap.bundle.js)</h2>
+
+      <h4>7.1 Accordion</h4>
+      <div class="explicacao">
+        Cada item usa <code>data-bs-toggle="collapse"</code> apontando via
+        <code>data-bs-target</code> para o <code>id</code> do conteúdo que
+        deve abrir/fechar. O <code>data-bs-parent</code> garante que só um
+        item fique aberto por vez.
+      </div>
+      <div class="accordion" id="accordionExemplo">
+        <div class="accordion-item">
+          <h2 class="accordion-header">
+            <button class="accordion-button" type="button"
+                    data-bs-toggle="collapse" data-bs-target="#colapso1">
+              O que é Bootstrap?
+            </button>
+          </h2>
+          <div id="colapso1" class="accordion-collapse collapse show"
+               data-bs-parent="#accordionExemplo">
+            <div class="accordion-body">
+              Um framework CSS com componentes prontos e sistema de grid.
+            </div>
+          </div>
+        </div>
+        <div class="accordion-item">
+          <h2 class="accordion-header">
+            <button class="accordion-button collapsed" type="button"
+                    data-bs-toggle="collapse" data-bs-target="#colapso2">
+              Preciso saber CSS para usar?
+            </button>
+          </h2>
+          <div id="colapso2" class="accordion-collapse collapse"
+               data-bs-parent="#accordionExemplo">
+            <div class="accordion-body">
+              O básico ajuda bastante (box model, seletores), mas o Bootstrap
+              resolve boa parte do CSS "pesado" pra você.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <h4 class="mt-4">7.2 Modal</h4>
+      <div class="explicacao">
+        O botão abre o modal via <code>data-bs-toggle="modal"</code> +
+        <code>data-bs-target="#idDoModal"</code>. O modal em si fica
+        escondido no HTML até ser acionado pelo JS.
+      </div>
+      <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalExemplo">
+        Abrir modal
+      </button>
+
+      <div class="modal fade" id="modalExemplo" tabindex="-1">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Exemplo de Modal</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+              Este conteúdo só aparece quando o modal é aberto.
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div> <!-- fim .container -->
+
+  <footer class="bg-dark text-white text-center p-3 mt-4">
+    Aula de Frameworks CSS — Bootstrap 5
+  </footer>
+
+  <!--
+    O JavaScript do Bootstrap vai no FIM do body: assim o HTML/visual já
+    carregou antes de baixar o script, e o script encontra todos os
+    elementos do DOM já prontos para ser manipulados (navbar, accordion,
+    modal etc. dependem dele para funcionar).
+  -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

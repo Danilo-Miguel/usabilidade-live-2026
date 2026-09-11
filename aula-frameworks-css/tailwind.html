@@ -1,0 +1,692 @@
+<!--
+  AULA: FRAMEWORKS CSS — TAILWIND CSS
+  ====================================
+  Este arquivo reconstrói os MESMOS exemplos do bootstrap.html, para dar pra
+  comparar lado a lado as duas abordagens (componente pronto x utilitários).
+  Leia junto com o tailwind.md (apostila detalhada de cada classe).
+
+  Abra este arquivo direto no navegador: File > Open, ou duplo clique nele.
+-->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!--
+    Assim como no bootstrap.html, este meta viewport é essencial para os
+    prefixos responsivos (sm:, md:, lg:...) funcionarem corretamente em
+    celulares. Isso é HTML puro, não é do Tailwind.
+  -->
+  <title>Aula Tailwind CSS</title>
+
+  <!--
+    AQUI ENTRA O TAILWIND: "Play CDN". Este único <script> baixa um
+    COMPILADOR JavaScript que roda DENTRO DO NAVEGADOR: ele lê o HTML da
+    página em tempo real, descobre quais classes Tailwind você usou (px-4,
+    bg-blue-600 etc.) e INJETA um <style> com o CSS correspondente na hora.
+
+    Isso é ótimo para uma aula (zero instalação), mas é diferente do que se
+    usa em produção. A comparação completa, com os comandos de instalação
+    local, está na Seção 0.9 logo abaixo, dentro do <body> (e também no
+    tailwind.md, seção 2).
+  -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    /*
+      CSS puro nosso, só para as caixas de explicação amarelas. Não é
+      Tailwind — é só para não confundir com o conteúdo de exemplo.
+    */
+    .explicacao {
+      background: #fef9c3;
+      border-left: 4px solid #eab308;
+      padding: 0.75rem 1rem;
+      margin-bottom: 1rem;
+      font-size: 0.9rem;
+    }
+    .explicacao code { background: #00000010; padding: 0 4px; }
+    section { border-bottom: 2px dashed #ccc; padding: 2rem 0; }
+  </style>
+</head>
+<body class="text-gray-800">
+  <!--
+    text-gray-800: cor de texto padrão da página. "gray" é a família de cor,
+    "800" é o TOM dela (escala de 50 a 900, do mais claro ao mais escuro —
+    NÃO é peso de fonte, ver Seção 0.6 mais abaixo). Repare que já estamos
+    usando Tailwind direto no <body>.
+  -->
+
+  <!-- ======================================================
+       BARRA DE NAVEGAÇÃO (fora da numeração pedagógica da aula — é só um
+       elemento de layout da página, não um "conteúdo" a explicar).
+       Tailwind não tem componente de navbar pronto: montamos com flex.
+       ====================================================== -->
+  <nav class="flex items-center justify-between bg-gray-900 text-white px-4 py-3 mb-8">
+    <!--
+      flex               -> display:flex (equivalente ao "por baixo dos panos"
+                            da .navbar do Bootstrap, só que aqui SOMOS NÓS
+                            que pedimos o flex, não vem escondido num
+                            componente).
+      items-center       -> alinha verticalmente ao centro.
+      justify-between    -> empurra o primeiro item pra esquerda e o
+                            resto pra direita (logo de um lado, menu do outro).
+      bg-gray-900        -> fundo quase preto.
+      text-white         -> texto branco (contraste com o fundo escuro).
+      px-4 py-3          -> "p" = padding, "x" = eixo horizontal (esquerda +
+                            direita), "y" = eixo vertical (topo + baixo).
+                            NÃO confundir com a unidade de medida "px"
+                            (pixel)! Aqui "px"/"py" são a PROPRIEDADE+EIXO,
+                            e o número (4, 3...) é um ÍNDICE de uma escala de
+                            espaçamento em rem. Explicação completa e tabela
+                            de conversão na Seção 0 logo abaixo.
+      mb-8               -> margin-bottom grande, separa da seção seguinte.
+    -->
+    <span class="font-bold text-lg">Aula Tailwind</span>
+
+    <ul class="hidden md:flex gap-6">
+      <!--
+        hidden       -> display:none por padrão (escondido no celular).
+        md:flex      -> a partir do breakpoint md, exibe como flex (menu
+                        horizontal). Isso é o equivalente MANUAL ao que o
+                        Bootstrap fazia sozinho com .navbar-expand-lg — no
+                        Tailwind, VOCÊ decide e escreve o comportamento
+                        responsivo, ele não vem pronto.
+        gap-6        -> espaço entre os itens do menu.
+      -->
+      <li><a href="#glossario" class="hover:text-blue-400">Glossário</a></li>
+      <li><a href="#grid" class="hover:text-blue-400">Grid</a></li>
+      <li><a href="#componentes" class="hover:text-blue-400">Componentes</a></li>
+      <li><a href="#estados" class="hover:text-blue-400">Estados</a></li>
+    </ul>
+
+    <!--
+      Observação para a turma: no Bootstrap, o botão hambúrguer + abrir/
+      fechar o menu no celular vinham prontos via JS do framework
+      (data-bs-toggle). No Tailwind, isso exigiria escrever alguns linhas de
+      JavaScript próprias (ex.: alternar a classe "hidden" com
+      addEventListener), porque o Tailwind é SÓ CSS. Deixado de fora aqui de
+      propósito para não misturar JavaScript nesta aula de CSS.
+    -->
+  </nav>
+
+  <div class="container mx-auto px-4">
+    <!--
+      container  -> largura máxima que muda por breakpoint (Tailwind traz
+                    esse utilitário pronto, mas sem centralizar sozinho).
+      mx-auto    -> margin horizontal automática = CENTRALIZA o container
+                    (no Bootstrap isso vinha de graça dentro de .container;
+                    aqui precisamos pedir explicitamente).
+      px-4       -> respiro nas laterais para o conteúdo não colar na borda
+                    da tela.
+    -->
+
+    <!-- ======================================================
+         SEÇÃO 0 — GLOSSÁRIO: COMO LER O NOME DE UMA CLASSE TAILWIND
+         Leia esta seção ANTES de todas as outras. Todo o resto da página
+         só faz sentido depois de entender estas peças.
+         ====================================================== -->
+    <section id="glossario">
+      <h2 class="text-2xl font-bold mb-4">0. Antes de tudo: como ler o nome de uma classe</h2>
+
+      <div class="explicacao">
+        Uma classe Tailwind quase sempre é montada assim:
+        <code>{propriedade}-{eixo/lado opcional}-{valor}</code>. Por exemplo,
+        <code>px-4</code> se decompõe em <code>p</code> (propriedade =
+        padding) + <code>x</code> (eixo = horizontal) + <code>4</code>
+        (valor = índice 4 da escala de espaçamento). Vamos abrir cada peça.
+      </div>
+
+      <h4 class="text-lg font-semibold mt-6">0.1 Prefixos de propriedade mais comuns</h4>
+      <div class="overflow-x-auto">
+        <table class="w-full text-left border-collapse mb-2">
+          <thead>
+            <tr class="bg-gray-100">
+              <th class="border p-2">Prefixo</th>
+              <th class="border p-2">Propriedade CSS</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td class="border p-2"><code>bg-</code></td><td class="border p-2">background (cor de fundo)</td></tr>
+            <tr><td class="border p-2"><code>text-</code></td><td class="border p-2">color (cor do texto) OU font-size, dependendo do valor</td></tr>
+            <tr><td class="border p-2"><code>border-</code></td><td class="border p-2">border (cor/estilo da borda)</td></tr>
+            <tr><td class="border p-2"><code>p</code></td><td class="border p-2">padding (espaço DENTRO do elemento, entre a borda e o conteúdo)</td></tr>
+            <tr><td class="border p-2"><code>m</code></td><td class="border p-2">margin (espaço FORA do elemento, entre ele e os vizinhos)</td></tr>
+            <tr><td class="border p-2"><code>w-</code></td><td class="border p-2">width (largura)</td></tr>
+            <tr><td class="border p-2"><code>h-</code></td><td class="border p-2">height (altura)</td></tr>
+            <tr><td class="border p-2"><code>gap-</code></td><td class="border p-2">gap (espaço entre itens de flex/grid)</td></tr>
+            <tr><td class="border p-2"><code>rounded</code></td><td class="border p-2">border-radius (cantos arredondados)</td></tr>
+            <tr><td class="border p-2"><code>shadow</code></td><td class="border p-2">box-shadow (sombra)</td></tr>
+            <tr><td class="border p-2"><code>font-</code></td><td class="border p-2">font-weight (peso) OU font-family, dependendo do valor</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="text-sm text-gray-600 mb-6">
+        Repare que <code>text-</code> serve para DUAS coisas (cor OU
+        tamanho) — o Tailwind decide pelo valor: <code>text-blue-600</code> é
+        cor (tem um tom de cor depois), <code>text-xl</code> é tamanho
+        (tem um "tamanho de camiseta" depois). Isso não é exclusividade do
+        Tailwind: no CSS puro, <code>color</code> e <code>font-size</code>
+        também são propriedades diferentes.
+      </p>
+
+      <h4 class="text-lg font-semibold mt-6">0.2 Letras de eixo/lado (depois de <code>p</code> e <code>m</code>)</h4>
+      <div class="explicacao">
+        <strong>Isto responde a pergunta "o que é px, o que é py":</strong>
+        <code>px</code> e <code>py</code> AQUI não são a unidade "pixel" —
+        são a propriedade <code>p</code> (padding) + uma letra de eixo. É
+        só uma coincidência de abreviação com a unidade CSS <code>px</code>
+        (que também existe, ver 0.5).
+      </div>
+      <div class="overflow-x-auto">
+        <table class="w-full text-left border-collapse mb-2">
+          <thead>
+            <tr class="bg-gray-100">
+              <th class="border p-2">Letra</th>
+              <th class="border p-2">Significa</th>
+              <th class="border p-2">Exemplo</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td class="border p-2"><code>t</code></td><td class="border p-2">top (topo)</td><td class="border p-2"><code>mt-4</code> = margin-top</td></tr>
+            <tr><td class="border p-2"><code>b</code></td><td class="border p-2">bottom (embaixo)</td><td class="border p-2"><code>pb-2</code> = padding-bottom</td></tr>
+            <tr><td class="border p-2"><code>l</code></td><td class="border p-2">left (esquerda)</td><td class="border p-2"><code>ml-2</code> = margin-left</td></tr>
+            <tr><td class="border p-2"><code>r</code></td><td class="border p-2">right (direita)</td><td class="border p-2"><code>pr-2</code> = padding-right</td></tr>
+            <tr><td class="border p-2"><code>x</code></td><td class="border p-2">eixo horizontal = esquerda + direita ao mesmo tempo</td><td class="border p-2"><code>px-4</code> = padding-left E padding-right</td></tr>
+            <tr><td class="border p-2"><code>y</code></td><td class="border p-2">eixo vertical = topo + embaixo ao mesmo tempo</td><td class="border p-2"><code>py-2</code> = padding-top E padding-bottom</td></tr>
+            <tr><td class="border p-2">(nenhuma)</td><td class="border p-2">todos os 4 lados de uma vez</td><td class="border p-2"><code>p-4</code> = padding nos 4 lados</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h4 class="text-lg font-semibold mt-6">0.3 O que é <code>rem</code>?</h4>
+      <div class="explicacao">
+        <code>rem</code> = "root em": uma unidade de medida RELATIVA ao
+        tamanho de fonte do elemento raiz da página (a tag <code>&lt;html&gt;</code>).
+        No navegador, esse tamanho raiz é <strong>16px por padrão</strong>
+        (o usuário pode mudar isso nas configurações de acessibilidade do
+        navegador/sistema). Então: <code>1rem = 16px</code>,
+        <code>0.5rem = 8px</code>, <code>2rem = 32px</code> — SE o usuário
+        não tiver alterado a configuração padrão.
+      </div>
+      <p class="mb-2">
+        Por que usar <code>rem</code> em vez de <code>px</code> para
+        espaçamento e fonte? Porque <code>rem</code> RESPEITA a preferência
+        de tamanho de fonte do usuário (importante para acessibilidade —
+        alguém com baixa visão que aumenta a fonte padrão do navegador vê
+        todo o site crescer proporcionalmente); um valor fixo em
+        <code>px</code> ignoraria essa preferência. Existe também o
+        <code>em</code>, parecido, mas relativo ao elemento PAI (não à raiz),
+        o que pode compor de forma imprevisível quando há elementos
+        aninhados — por isso o Tailwind usa <code>rem</code> como padrão.
+      </p>
+
+      <h4 class="text-lg font-semibold mt-6">0.4 A escala numérica de espaçamento (o "4" de <code>px-4</code>)</h4>
+      <div class="explicacao">
+        O número depois do hífen NÃO é a quantidade de pixels nem de rem
+        diretamente — é o ÍNDICE de uma escala pré-definida pelo Tailwind.
+        Essa escala é usada em <code>p-*</code>, <code>m-*</code>,
+        <code>gap-*</code>, <code>w-*</code>, <code>h-*</code>, etc.
+      </div>
+      <div class="overflow-x-auto">
+        <table class="w-full text-left border-collapse mb-2">
+          <thead>
+            <tr class="bg-gray-100">
+              <th class="border p-2">Índice</th>
+              <th class="border p-2">Valor em rem</th>
+              <th class="border p-2">Valor em px (padrão)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td class="border p-2"><code>0</code></td><td class="border p-2">0rem</td><td class="border p-2">0px</td></tr>
+            <tr><td class="border p-2"><code>0.5</code></td><td class="border p-2">0.125rem</td><td class="border p-2">2px</td></tr>
+            <tr><td class="border p-2"><code>1</code></td><td class="border p-2">0.25rem</td><td class="border p-2">4px</td></tr>
+            <tr><td class="border p-2"><code>2</code></td><td class="border p-2">0.5rem</td><td class="border p-2">8px</td></tr>
+            <tr><td class="border p-2"><code>3</code></td><td class="border p-2">0.75rem</td><td class="border p-2">12px</td></tr>
+            <tr><td class="border p-2"><code>4</code></td><td class="border p-2">1rem</td><td class="border p-2">16px</td></tr>
+            <tr><td class="border p-2"><code>6</code></td><td class="border p-2">1.5rem</td><td class="border p-2">24px</td></tr>
+            <tr><td class="border p-2"><code>8</code></td><td class="border p-2">2rem</td><td class="border p-2">32px</td></tr>
+            <tr><td class="border p-2"><code>12</code></td><td class="border p-2">3rem</td><td class="border p-2">48px</td></tr>
+            <tr><td class="border p-2"><code>16</code></td><td class="border p-2">4rem</td><td class="border p-2">64px</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="text-sm text-gray-600 mb-6">
+        Ou seja: <code>px-4</code> = padding horizontal de <code>1rem</code>
+        (16px, assumindo fonte padrão) de cada lado. <code>py-2</code> =
+        padding vertical de <code>0.5rem</code> (8px) em cima e embaixo.
+      </p>
+
+      <h4 class="text-lg font-semibold mt-6">0.5 Cuidado: existe um "px" que É de fato "1 pixel"</h4>
+      <div class="explicacao">
+        Para complicar um pouco: além do <code>px</code>/<code>py</code> de
+        EIXO (item 0.2), o Tailwind também tem, na escala de tamanho, uma
+        chave especial literalmente chamada <code>px</code> que significa
+        "exatamente 1 pixel" — usada sozinha (sem eixo antes), como em
+        <code>w-px</code> (width: 1px). São dois usos diferentes da mesma
+        palavra "px"; o contexto (se vem logo depois de <code>p</code>/<code>m</code>
+        como eixo, ou sozinha como tamanho) resolve a ambiguidade. Nesta
+        aula não usamos <code>w-px</code>, mas é bom saber que existe.
+      </div>
+
+      <h4 class="text-lg font-semibold mt-6">0.6 A escala de cor (o "800" de <code>text-gray-800</code>)</h4>
+      <div class="explicacao">
+        <strong>Isto responde a pergunta "800 é peso?":</strong> NÃO. Em uma
+        classe de cor (<code>bg-</code>, <code>text-</code>,
+        <code>border-</code> seguidos do nome de uma cor), o número de 50 a
+        900 é o TOM/INTENSIDADE daquela cor — quanto MAIOR o número, mais
+        ESCURA/saturada a cor fica. Não tem nenhuma relação com peso de
+        fonte (isso é outra escala, item 0.7). Veja a escala do cinza
+        renderizada de verdade abaixo:
+      </div>
+      <div class="flex flex-wrap gap-1 mb-2">
+        <div class="w-16 h-16 bg-gray-50 border flex items-center justify-center text-xs">50</div>
+        <div class="w-16 h-16 bg-gray-100 flex items-center justify-center text-xs">100</div>
+        <div class="w-16 h-16 bg-gray-200 flex items-center justify-center text-xs">200</div>
+        <div class="w-16 h-16 bg-gray-300 flex items-center justify-center text-xs">300</div>
+        <div class="w-16 h-16 bg-gray-400 flex items-center justify-center text-xs">400</div>
+        <div class="w-16 h-16 bg-gray-500 flex items-center justify-center text-xs text-white">500</div>
+        <div class="w-16 h-16 bg-gray-600 flex items-center justify-center text-xs text-white">600</div>
+        <div class="w-16 h-16 bg-gray-700 flex items-center justify-center text-xs text-white">700</div>
+        <div class="w-16 h-16 bg-gray-800 flex items-center justify-center text-xs text-white">800</div>
+        <div class="w-16 h-16 bg-gray-900 flex items-center justify-center text-xs text-white">900</div>
+      </div>
+      <p class="text-sm text-gray-600 mb-6">
+        <code>50</code> = quase branco, <code>900</code> = quase preto.
+        <code>500</code> costuma ser o tom "padrão/vívido" daquela cor. Isso
+        vale para QUALQUER cor da paleta (<code>blue-100</code>...
+        <code>blue-900</code>, <code>red-100</code>...<code>red-900</code>,
+        etc.) — cada uma tem sua própria escala de 50 a 900.
+      </p>
+
+      <h4 class="text-lg font-semibold mt-6">0.7 A escala de peso da fonte (outra escala, com NOMES, não números)</h4>
+      <div class="explicacao">
+        Peso de fonte no CSS puro é numérico (100 a 900) — mas o Tailwind
+        expõe isso via NOMES (<code>font-bold</code>), exatamente para você
+        não confundir com o número de tom de cor do item 0.6. Por baixo dos
+        panos, cada nome corresponde a um número de <code>font-weight</code>:
+      </div>
+      <div class="overflow-x-auto">
+        <table class="w-full text-left border-collapse mb-6">
+          <thead>
+            <tr class="bg-gray-100">
+              <th class="border p-2">Classe Tailwind</th>
+              <th class="border p-2"><code>font-weight</code> no CSS puro</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td class="border p-2"><code>font-thin</code></td><td class="border p-2">100</td></tr>
+            <tr><td class="border p-2"><code>font-light</code></td><td class="border p-2">300</td></tr>
+            <tr><td class="border p-2"><code>font-normal</code></td><td class="border p-2">400 (padrão)</td></tr>
+            <tr><td class="border p-2"><code>font-medium</code></td><td class="border p-2">500</td></tr>
+            <tr><td class="border p-2"><code>font-semibold</code></td><td class="border p-2">600</td></tr>
+            <tr><td class="border p-2"><code>font-bold</code></td><td class="border p-2">700</td></tr>
+            <tr><td class="border p-2"><code>font-extrabold</code></td><td class="border p-2">800</td></tr>
+            <tr><td class="border p-2"><code>font-black</code></td><td class="border p-2">900</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="text-sm text-gray-600 mb-6">
+        Ou seja: <code>font-extrabold</code> POR BAIXO DOS PANOS usa o
+        mesmo número "800" que <code>text-gray-800</code> usa para tom de
+        cor — mas são duas escalas completamente independentes que só
+        coincidem em usar múltiplos de 100. No <code>class</code> você
+        nunca escreve <code>font-800</code>; sempre usa o nome
+        (<code>font-extrabold</code>).
+      </p>
+
+      <h4 class="text-lg font-semibold mt-6">0.8 A escala de tamanho de fonte (<code>text-xs</code> ... <code>text-6xl</code>)</h4>
+      <div class="overflow-x-auto">
+        <table class="w-full text-left border-collapse mb-6">
+          <thead>
+            <tr class="bg-gray-100">
+              <th class="border p-2">Classe</th>
+              <th class="border p-2">Tamanho</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td class="border p-2"><code>text-xs</code></td><td class="border p-2">0.75rem (12px)</td></tr>
+            <tr><td class="border p-2"><code>text-sm</code></td><td class="border p-2">0.875rem (14px)</td></tr>
+            <tr><td class="border p-2"><code>text-base</code></td><td class="border p-2">1rem (16px) — tamanho padrão do navegador</td></tr>
+            <tr><td class="border p-2"><code>text-lg</code></td><td class="border p-2">1.125rem (18px)</td></tr>
+            <tr><td class="border p-2"><code>text-xl</code></td><td class="border p-2">1.25rem (20px)</td></tr>
+            <tr><td class="border p-2"><code>text-2xl</code> ... <code>text-6xl</code></td><td class="border p-2">crescendo até 3.75rem (60px)</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="text-sm text-gray-600 mb-6">
+        "xs/sm/base/lg/xl" é o mesmo estilo de nomenclatura de camisetas
+        (P/M/G/GG) — cresce na ordem alfabética das siglas, não são números.
+      </p>
+
+      <h4 class="text-lg font-semibold mt-6">0.9 Play CDN (o que estamos usando nesta aula) x Instalação local (produção)</h4>
+      <div class="explicacao">
+        O <code>&lt;script src="https://cdn.tailwindcss.com"&gt;</code> no
+        <code>&lt;head&gt;</code> desta página é chamado de <strong>Play
+        CDN</strong>. Ele é perfeito para uma aula, mas o próprio Tailwind
+        recomenda NÃO usá-lo em um site publicado de verdade. Veja a
+        diferença:
+      </div>
+      <div class="overflow-x-auto mb-4">
+        <table class="w-full text-left border-collapse">
+          <thead>
+            <tr class="bg-gray-100">
+              <th class="border p-2">Aspecto</th>
+              <th class="border p-2">Play CDN (esta aula)</th>
+              <th class="border p-2">Instalação local (produção)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td class="border p-2">Setup</td><td class="border p-2">1 linha de <code>&lt;script&gt;</code></td><td class="border p-2"><code>npm install</code> + arquivo de config</td></tr>
+            <tr><td class="border p-2">O que o visitante baixa</td><td class="border p-2">Um compilador JavaScript inteiro, que roda no navegador dele a cada visita</td><td class="border p-2">Só um arquivo <code>.css</code> estático, já pronto</td></tr>
+            <tr><td class="border p-2">Tamanho final</td><td class="border p-2">Maior (o compilador é pesado)</td><td class="border p-2">Menor (só as classes que você realmente usou)</td></tr>
+            <tr><td class="border p-2">Customização (cores/fontes próprias)</td><td class="border p-2">Limitada</td><td class="border p-2">Total, via arquivo de configuração</td></tr>
+            <tr><td class="border p-2">Cache do navegador</td><td class="border p-2">Ruim (recompila a cada carregamento)</td><td class="border p-2">Ótimo (arquivo estático, cacheável)</td></tr>
+            <tr><td class="border p-2">Indicado para</td><td class="border p-2">Aula, prototipagem rápida</td><td class="border p-2">Sites e produtos publicados de verdade</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="mb-2">Os comandos para configurar a versão de produção (não rodamos isso hoje, é só para vocês verem como é):</p>
+      <pre class="bg-gray-900 text-green-300 text-sm p-4 rounded overflow-x-auto"><code>npm install -D tailwindcss postcss autoprefixer
+npx tailwindcss init -p</code></pre>
+      <p class="mb-2">Isso cria um <code>tailwind.config.js</code>, onde você diz quais arquivos o Tailwind deve "vigiar" para saber quais classes existem:</p>
+      <pre class="bg-gray-900 text-green-300 text-sm p-4 rounded overflow-x-auto"><code>// tailwind.config.js
+module.exports = {
+  content: ["./src/**/*.{html,js}"],
+  theme: { extend: {} },
+  plugins: [],
+}</code></pre>
+      <p class="mb-2">Um arquivo CSS de entrada com 3 diretivas especiais:</p>
+      <pre class="bg-gray-900 text-green-300 text-sm p-4 rounded overflow-x-auto"><code>/* src/input.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;</code></pre>
+      <p class="mb-2">E o comando de build, que gera o CSS final estático (sem JavaScript nenhum sobrando para o visitante):</p>
+      <pre class="bg-gray-900 text-green-300 text-sm p-4 rounded overflow-x-auto mb-6"><code>npx tailwindcss -i ./src/input.css -o ./dist/output.css --watch</code></pre>
+    </section>
+
+    <!-- ======================================================
+         SEÇÃO 1 — TIPOGRAFIA E CORES
+         ====================================================== -->
+    <section id="tipografia">
+      <h2 class="text-2xl font-bold mb-4">1. Tipografia e cores</h2>
+
+      <div class="explicacao">
+        <strong>Comparando com o Bootstrap:</strong> lá era
+        <code>class="display-3 fw-bold text-primary"</code> (3 classes
+        "prontas"). Aqui é <code>class="text-6xl font-bold text-blue-600"</code>
+        — MESMA ideia (tamanho + peso + cor), só que cada palavra controla
+        exatamente UMA propriedade CSS, com números/tons ao invés de nomes
+        fixos como "primary".
+      </div>
+
+      <h1 class="text-6xl font-bold text-blue-600">Título de destaque</h1>
+      <!--
+        text-6xl    -> font-size bem grande (escala: text-xs ... text-6xl,
+                       do menor ao maior — "tamanho de camiseta", ver 0.8).
+        font-bold   -> font-weight: bold. É um NOME, não um número (ver 0.7)
+                       — por baixo dos panos vale 700.
+        text-blue-600 -> cor do texto azul, TOM 600 numa escala de 50
+                       (quase branco) a 900 (quase preto). Esse número é
+                       intensidade de cor, NÃO peso de fonte — são duas
+                       escalas diferentes que só coincidem em usar múltiplos
+                       de 100 (ver Seção 0.6 e 0.7 no início da página).
+      -->
+
+      <p class="text-xl text-gray-600 mt-2">
+        Este parágrafo grande (<code>text-xl</code>) funciona como o
+        <code>.lead</code> do Bootstrap: destaque logo abaixo do título.
+      </p>
+
+      <p class="text-center uppercase text-gray-500 mt-4">
+        texto centralizado, em maiúsculas, cinza médio
+      </p>
+      <!--
+        text-center -> text-align:center.
+        uppercase   -> transforma para MAIÚSCULO via CSS.
+        text-gray-500 -> cinza médio.
+      -->
+
+      <p class="mt-4 space-x-2">
+        <span class="bg-yellow-400 px-2 py-1 rounded">bg-yellow-400</span>
+        <span class="bg-green-600 text-white px-2 py-1 rounded">bg-green-600</span>
+        <span class="bg-red-600 text-white px-2 py-1 rounded">bg-red-600</span>
+        <span class="bg-sky-400 px-2 py-1 rounded">bg-sky-400</span>
+        <!--
+          space-x-2 -> adiciona espaço horizontal ENTRE os filhos diretos
+          (alternativa ao gap quando não se está usando flex/grid).
+        -->
+      </p>
+    </section>
+
+    <!-- ======================================================
+         SEÇÃO 2 — "GRID" (aqui é CSS Grid de verdade, não um sistema de
+         12 colunas com nomes prontos como no Bootstrap)
+         ====================================================== -->
+    <section id="grid">
+      <h2 class="text-2xl font-bold mb-4">2. Grid responsivo</h2>
+
+      <div class="explicacao">
+        O Tailwind não tem <code>col-8</code>/<code>col-4</code> prontos como
+        o Bootstrap. Em vez disso, usamos CSS Grid de verdade:
+        <code>grid-cols-N</code> define quantas colunas existem AGORA, e
+        prefixos como <code>md:</code> mudam esse número por tamanho de tela.
+        Redimensione a janela para ver mudar de 1 para 3 colunas.
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-center mb-8">
+        <!--
+          grid            -> display: grid.
+          grid-cols-1     -> 1 coluna por padrão (mobile).
+          md:grid-cols-3  -> a partir do md, 3 colunas.
+          gap-4           -> espaço entre as células do grid.
+        -->
+        <div class="bg-gray-100 border border-gray-300 p-3 rounded">grid-cols-1 md:grid-cols-3</div>
+        <div class="bg-gray-100 border border-gray-300 p-3 rounded">grid-cols-1 md:grid-cols-3</div>
+        <div class="bg-gray-100 border border-gray-300 p-3 rounded">grid-cols-1 md:grid-cols-3</div>
+      </div>
+
+      <div class="grid grid-cols-12 gap-4 text-center">
+        <!--
+          Aqui simulamos o "col-8 / col-4" do Bootstrap usando um grid de 12
+          colunas de verdade + col-span (quantas colunas o item ocupa).
+        -->
+        <div class="col-span-8 bg-blue-600 text-white p-3 rounded">col-span-8 (66%)</div>
+        <div class="col-span-4 bg-gray-500 text-white p-3 rounded">col-span-4 (33%)</div>
+      </div>
+    </section>
+
+    <!-- ======================================================
+         SEÇÃO 3 — ESPAÇAMENTO
+         ====================================================== -->
+    <section id="espacamento">
+      <h2 class="text-2xl font-bold mb-4">3. Espaçamento: <code>p-*</code> e <code>m-*</code></h2>
+
+      <div class="explicacao">
+        Mesmo padrão de nome do Bootstrap (<code>{p ou m}{lado}-{tamanho}</code>),
+        mas com escala numérica mais granular: cada índice da escala
+        equivale a um valor em <code>rem</code> (unidade relativa à fonte
+        raiz do navegador, normalmente 16px — ver Seção 0.3/0.4 para a
+        explicação completa e a tabela de conversão). <code>p-4</code> = 1rem
+        (16px), <code>p-8</code> = 2rem (32px).
+      </div>
+
+      <div class="bg-gray-100 border mb-2 p-0">p-0 (padding zero)</div>
+      <div class="bg-gray-100 border mb-2 p-2">p-2 (padding pequeno)</div>
+      <div class="bg-gray-100 border mb-2 p-8">p-8 (padding grande)</div>
+      <div class="bg-gray-100 border mt-8">mt-8 (margin-top grande, empurra este bloco pra baixo)</div>
+
+      <div class="bg-blue-600 text-white w-52 mt-4">largura fixa (w-52)</div>
+      <div class="bg-gray-500 text-white w-52 mx-auto mt-2">mx-auto -&gt; centralizado</div>
+      <!--
+        w-52  -> width fixa em escala Tailwind (13rem ≈ 208px), equivalente
+                ao style="width:200px" que usamos no exemplo do Bootstrap.
+        mx-auto só centraliza porque a largura é fixa, mesma lógica do
+        Bootstrap.
+      -->
+    </section>
+
+    <!-- ======================================================
+         SEÇÃO 4 — "COMPONENTES" MONTADOS NA MÃO
+         ====================================================== -->
+    <section id="componentes">
+      <h2 class="text-2xl font-bold mb-4">4. Componentes montados com utilitários</h2>
+
+      <h4 class="text-lg font-semibold">4.1 Botões</h4>
+      <div class="explicacao">
+        Não existe <code>.btn</code> pronto. O "botão" é só um
+        <code>&lt;button&gt;</code> com padding, cor de fundo, cor de texto e
+        cantos arredondados — cada um definido por uma classe utilitária
+        separada.
+      </div>
+      <button type="button" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded mr-2">
+        Primário
+      </button>
+      <button type="button" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded mr-2">
+        Sucesso
+      </button>
+      <button type="button" class="border-2 border-red-600 text-red-600 hover:bg-red-600 hover:text-white px-4 py-2 rounded mr-2">
+        Outline
+      </button>
+      <button type="button" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 text-lg rounded mr-2">
+        Grande
+      </button>
+      <button type="button" class="bg-blue-600 hover:bg-blue-700 text-white px-2 py-1 text-sm rounded">
+        Pequeno
+      </button>
+
+      <h4 class="text-lg font-semibold mt-6">4.2 "Card"</h4>
+      <div class="explicacao">
+        Comparando com o Bootstrap (<code>class="card"</code> pronto): aqui
+        juntamos <code>rounded-lg</code> (cantos), <code>shadow-md</code>
+        (sombra) e <code>overflow-hidden</code> (para a borda arredondada
+        "cortar" a imagem) para chegar no mesmo resultado visual.
+      </div>
+      <div class="max-w-sm rounded-lg shadow-md overflow-hidden bg-white border">
+        <div class="p-4">
+          <h5 class="text-lg font-bold mb-2">Título do card</h5>
+          <p class="text-gray-600 mb-4">
+            Um pouco de texto de exemplo dentro do corpo do card.
+          </p>
+          <a href="#" class="inline-block bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">
+            Ver mais
+          </a>
+        </div>
+      </div>
+
+      <h4 class="text-lg font-semibold mt-6">4.3 "Alerts"</h4>
+      <div class="explicacao">
+        No Bootstrap, <code>.alert-success</code> já trazia fundo, borda e
+        texto combinando. Aqui escolhemos os 3 tons manualmente dentro da
+        mesma família de cor (ex.: fundo <code>green-100</code>, texto
+        <code>green-800</code>, borda <code>green-300</code>).
+      </div>
+      <div class="bg-green-100 text-green-800 border border-green-300 px-4 py-3 rounded mb-2" role="alert">
+        Sucesso! Operação concluída.
+      </div>
+      <div class="bg-yellow-100 text-yellow-800 border border-yellow-300 px-4 py-3 rounded mb-2" role="alert">
+        Atenção! Confira os dados.
+      </div>
+      <div class="bg-red-100 text-red-800 border border-red-300 px-4 py-3 rounded" role="alert">
+        Erro! Algo deu errado.
+      </div>
+
+      <h4 class="text-lg font-semibold mt-6">4.4 "Badges"</h4>
+      <p>
+        Notificações
+        <span class="bg-gray-600 text-white text-xs px-2 py-1 rounded-full">4</span>
+        Status:
+        <span class="bg-green-600 text-white text-xs px-2 py-1 rounded-full">Ativo</span>
+      </p>
+
+      <h4 class="text-lg font-semibold mt-6">4.5 Formulário</h4>
+      <div class="explicacao">
+        <code>for</code>/<code>id</code> continuam sendo HTML puro, iguais
+        ao exemplo do Bootstrap. A diferença é só visual: em vez de
+        <code>.form-control</code> pronto, definimos borda, padding e cantos
+        na mão, e usamos <code>focus:</code> para o contorno azul ao clicar.
+      </div>
+      <form>
+        <div class="mb-4">
+          <label for="email-tw" class="block font-medium mb-1">E-mail</label>
+          <input type="email" id="email-tw" placeholder="voce@exemplo.com"
+                 class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+        </div>
+        <div class="mb-4">
+          <label for="senha-tw" class="block font-medium mb-1">Senha</label>
+          <input type="password" id="senha-tw"
+                 class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+        </div>
+        <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">
+          Enviar
+        </button>
+      </form>
+    </section>
+
+    <!-- ======================================================
+         SEÇÃO 5 — FLEXBOX
+         ====================================================== -->
+    <section id="flex">
+      <h2 class="text-2xl font-bold mb-4">5. Flexbox</h2>
+      <div class="explicacao">
+        Praticamente idêntico ao Bootstrap na ideia, só que os nomes seguem o
+        CSS puro mais de perto: <code>justify-between</code> em vez de
+        <code>justify-content-between</code>, <code>items-center</code> em
+        vez de <code>align-items-center</code>.
+      </div>
+      <div class="flex justify-between items-center bg-gray-100 border p-3 gap-3 rounded">
+        <div class="bg-blue-600 text-white p-2 rounded">Item 1</div>
+        <div class="bg-blue-600 text-white p-2 rounded">Item 2</div>
+        <div class="bg-blue-600 text-white p-2 rounded">Item 3</div>
+      </div>
+    </section>
+
+    <!-- ======================================================
+         SEÇÃO 6 — ESTADOS E RESPONSIVIDADE
+         ====================================================== -->
+    <section id="estados">
+      <h2 class="text-2xl font-bold mb-4">6. Estados (<code>hover:</code>) e responsividade (<code>md:</code>)</h2>
+
+      <div class="explicacao">
+        <code>hover:</code> aplica a classe seguinte só quando o mouse está
+        em cima (veja os botões da seção 4.1 também). Prefixos como
+        <code>md:</code> aplicam a classe só a partir daquele tamanho de
+        tela — dá pra combinar os dois, como em <code>md:hover:bg-blue-700</code>.
+      </div>
+
+      <button class="bg-purple-600 hover:bg-purple-800 text-white px-4 py-2 rounded mb-4">
+        Passe o mouse aqui (hover:)
+      </button>
+
+      <div class="hidden md:block bg-blue-600 text-white p-3 rounded mb-2">
+        Só visível a partir do breakpoint md (tablet/desktop) — <code>hidden md:block</code>
+      </div>
+      <div class="block md:hidden bg-yellow-400 p-3 rounded">
+        Só visível ABAIXO do breakpoint md (celular) — <code>block md:hidden</code>
+      </div>
+
+      <h4 class="text-lg font-semibold mt-6">Dark mode (<code>dark:</code>)</h4>
+      <div class="explicacao">
+        Este bloco muda de cor se o SISTEMA OPERACIONAL do computador estiver
+        em modo escuro (o Tailwind, por padrão, segue a preferência do
+        sistema). Não precisa de nenhum botão para "ligar" — é automático.
+      </div>
+      <div class="bg-white text-black dark:bg-gray-900 dark:text-white border p-4 rounded">
+        Fundo claro no modo claro, fundo escuro no modo escuro (automático).
+      </div>
+    </section>
+
+  </div> <!-- fim .container -->
+
+  <footer class="bg-gray-900 text-white text-center p-3 mt-8">
+    Aula de Frameworks CSS — Tailwind CSS
+  </footer>
+
+  <!--
+    Repare: NÃO há nenhum <script> de componente aqui (ao contrário do
+    bootstrap.html, que carregava bootstrap.bundle.min.js no fim do body).
+    O Tailwind é SÓ CSS — qualquer interatividade (abrir modal, menu mobile
+    funcional, carousel) precisaria ser escrita à mão em JavaScript puro,
+    o que fica fora do escopo desta aula de CSS.
+  -->
+</body>
+</html>

@@ -1,0 +1,309 @@
+<!--
+  ORBIT — página de exemplo "de verdade" (não é material de explicação).
+  Este arquivo é a referência de PRÁTICA: mostra como um site real, bonito e
+  funcional fica quando construído só com utilitários Tailwind.
+
+  As explicações detalhadas de cada classe (o que é rem, px, py, escala de
+  cor etc.) estão em ../aula-frameworks-css/tailwind.md e tailwind.html —
+  NÃO foram alteradas. Aqui você só encontra pequenas etiquetas discretas
+  (o rótulo cinza monoespaçado abaixo de cada componente) apontando qual
+  classe/medida foi usada, para servir de cola rápida durante a implementação
+  ao vivo.
+-->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Orbit — Gestão de tarefas para equipes pequenas</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    body { font-family: 'Inter', ui-sans-serif, system-ui, sans-serif; }
+    /* Etiqueta discreta de "spec" que acompanha os componentes de exemplo.
+       Não é um componente de UI real da Orbit — é só uma anotação de aula. */
+    .spec {
+      font-family: ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
+      font-size: 0.6875rem;
+      color: #94a3b8;
+      margin-top: 0.375rem;
+      letter-spacing: 0.01em;
+    }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800">
+
+  <!-- ===================== NAVBAR ===================== -->
+  <header class="sticky top-0 z-50 bg-white/80 backdrop-blur border-b border-slate-200">
+    <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+      <a href="#" class="flex items-center gap-2 font-extrabold text-lg text-slate-900">
+        <span class="inline-flex w-8 h-8 rounded-lg bg-indigo-600 text-white items-center justify-center text-sm">O</span>
+        Orbit
+      </a>
+      <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-slate-600">
+        <a href="#produto" class="hover:text-slate-900">Produto</a>
+        <a href="#precos" class="hover:text-slate-900">Preços</a>
+        <a href="#contato" class="hover:text-slate-900">Contato</a>
+      </nav>
+      <div class="flex items-center gap-3">
+        <a href="#" class="hidden sm:inline-block text-sm font-medium text-slate-600 hover:text-slate-900 px-3 py-2">
+          Entrar
+        </a>
+        <a href="#precos" class="inline-block bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold px-4 py-2 rounded-lg shadow-sm transition-colors">
+          Começar grátis
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===================== HERO ===================== -->
+  <section class="max-w-6xl mx-auto px-6 pt-20 pb-16 text-center">
+    <span class="inline-block bg-indigo-50 text-indigo-700 text-xs font-semibold px-3 py-1 rounded-full mb-5">
+      Novo · integração com calendário
+    </span>
+    <h1 class="text-4xl sm:text-5xl font-extrabold tracking-tight text-slate-900 max-w-3xl mx-auto">
+      Organize sua equipe sem planilha, sem grupo de WhatsApp lotado.
+    </h1>
+    <p class="mt-5 text-lg text-slate-600 max-w-xl mx-auto">
+      O Orbit junta tarefas, prazos e conversas da equipe em um só lugar.
+      Comece em 2 minutos, sem cartão de crédito.
+    </p>
+
+    <div class="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3">
+      <a href="#precos" class="w-full sm:w-auto bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-6 py-3 rounded-lg shadow-sm transition-colors">
+        Criar conta grátis
+      </a>
+      <a href="#produto" class="w-full sm:w-auto border border-slate-300 hover:border-slate-400 text-slate-700 font-semibold px-6 py-3 rounded-lg transition-colors">
+        Ver como funciona
+      </a>
+    </div>
+    <p class="spec mt-4">
+      botão da esquerda: <code>px-6 py-3</code> (1.5rem / 0.75rem) · botão da direita: mesma medida, mas <code>border</code> em vez de <code>bg-</code> — mesmo tamanho, prioridade visual menor
+    </p>
+  </section>
+
+  <!-- ===================== PRODUTO / AÇÕES RÁPIDAS ===================== -->
+  <section id="produto" class="max-w-6xl mx-auto px-6 py-16">
+    <div class="text-center max-w-2xl mx-auto mb-12">
+      <h2 class="text-3xl font-bold text-slate-900">Cada ação tem o peso certo</h2>
+      <p class="mt-3 text-slate-600">
+        Um card de tarefa de verdade do Orbit — repare que nem todo botão
+        pode gritar a mesma coisa.
+      </p>
+    </div>
+
+    <div class="bg-white border border-slate-200 rounded-2xl shadow-sm p-6 sm:p-8 max-w-2xl mx-auto">
+      <div class="flex items-start justify-between gap-4">
+        <div>
+          <span class="inline-block bg-amber-50 text-amber-700 text-xs font-semibold px-2 py-0.5 rounded mb-2">
+            Vence hoje
+          </span>
+          <h3 class="text-lg font-semibold text-slate-900">Revisar proposta do cliente Aurora</h3>
+          <p class="text-sm text-slate-500 mt-1">Atribuída a você · Marketing</p>
+        </div>
+      </div>
+
+      <div class="mt-6 flex flex-wrap items-center gap-3">
+        <button class="bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold px-4 py-2 rounded-lg transition-colors">
+          Concluir tarefa
+        </button>
+        <button class="border border-slate-300 hover:bg-slate-50 text-slate-700 text-sm font-semibold px-4 py-2 rounded-lg transition-colors">
+          Adiar
+        </button>
+        <button class="text-slate-500 hover:text-slate-700 text-sm font-semibold px-4 py-2 rounded-lg transition-colors">
+          Comentar
+        </button>
+        <button class="ml-auto text-red-600 hover:bg-red-50 text-sm font-semibold px-4 py-2 rounded-lg transition-colors">
+          Excluir
+        </button>
+      </div>
+      <p class="spec">
+        <strong>por que cada um é diferente:</strong>
+        <code>bg-indigo-600</code> = a ação principal esperada (só uma por tela);
+        <code>border</code> = ação secundária, ainda importante;
+        sem fundo/borda = ação de baixo impacto (não compete visualmente);
+        <code>text-red-600</code> = ação destrutiva, cor de alerta avisa antes do clique.
+      </p>
+    </div>
+
+    <!-- Variações de tamanho: mesma "receita", ganho/perda de padding e fonte -->
+    <div class="mt-10 bg-white border border-slate-200 rounded-2xl shadow-sm p-6 sm:p-8 max-w-2xl mx-auto">
+      <h3 class="text-sm font-semibold text-slate-500 uppercase tracking-wide mb-4">Mesmo botão, 3 tamanhos</h3>
+      <div class="flex flex-wrap items-center gap-4">
+        <div>
+          <button class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold px-3 py-1.5 rounded-md transition-colors">
+            Pequeno
+          </button>
+          <p class="spec">px-3 py-1.5 · text-xs</p>
+        </div>
+        <div>
+          <button class="bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold px-4 py-2 rounded-lg transition-colors">
+            Médio
+          </button>
+          <p class="spec">px-4 py-2 · text-sm</p>
+        </div>
+        <div>
+          <button class="bg-indigo-600 hover:bg-indigo-700 text-white text-base font-semibold px-6 py-3 rounded-lg transition-colors">
+            Grande
+          </button>
+          <p class="spec">px-6 py-3 · text-base</p>
+        </div>
+      </div>
+      <p class="spec mt-4">
+        1rem = 16px (fonte padrão do navegador). <code>py-1.5</code> = 0.375rem (6px) de cada lado;
+        <code>py-3</code> = 0.75rem (12px) — o botão "grande" respira quase o dobro do "pequeno".
+      </p>
+    </div>
+  </section>
+
+  <!-- ===================== PREÇOS ===================== -->
+  <section id="precos" class="bg-white border-y border-slate-200 py-16">
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="text-center max-w-2xl mx-auto mb-12">
+        <h2 class="text-3xl font-bold text-slate-900">Planos para cada tamanho de equipe</h2>
+        <p class="mt-3 text-slate-600">Repare que o botão de cada card ocupa 100% da largura do card (<code>w-full</code>), não um tamanho fixo.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="border border-slate-200 rounded-2xl p-6 flex flex-col">
+          <h3 class="font-semibold text-slate-900">Starter</h3>
+          <p class="text-sm text-slate-500 mt-1">Para times de até 5 pessoas</p>
+          <p class="mt-4 text-3xl font-extrabold text-slate-900">R$ 0</p>
+          <ul class="mt-4 space-y-2 text-sm text-slate-600 flex-1">
+            <li>✓ Tarefas ilimitadas</li>
+            <li>✓ 1 projeto ativo</li>
+          </ul>
+          <button class="mt-6 w-full border border-slate-300 hover:bg-slate-50 text-slate-700 font-semibold px-4 py-2.5 rounded-lg transition-colors">
+            Começar
+          </button>
+          <p class="spec text-center">w-full · px-4 py-2.5</p>
+        </div>
+
+        <div class="border-2 border-indigo-600 rounded-2xl p-6 flex flex-col relative">
+          <span class="absolute -top-3 left-1/2 -translate-x-1/2 bg-indigo-600 text-white text-xs font-semibold px-3 py-1 rounded-full">
+            Mais popular
+          </span>
+          <h3 class="font-semibold text-slate-900">Team</h3>
+          <p class="text-sm text-slate-500 mt-1">Para times de até 20 pessoas</p>
+          <p class="mt-4 text-3xl font-extrabold text-slate-900">R$ 49<span class="text-base font-medium text-slate-500">/mês</span></p>
+          <ul class="mt-4 space-y-2 text-sm text-slate-600 flex-1">
+            <li>✓ Tudo do Starter</li>
+            <li>✓ Projetos ilimitados</li>
+            <li>✓ Integração com calendário</li>
+          </ul>
+          <button class="mt-6 w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-4 py-2.5 rounded-lg shadow-sm transition-colors">
+            Assinar Team
+          </button>
+          <p class="spec text-center">w-full · px-4 py-2.5</p>
+        </div>
+
+        <div class="border border-slate-200 rounded-2xl p-6 flex flex-col">
+          <h3 class="font-semibold text-slate-900">Empresa</h3>
+          <p class="text-sm text-slate-500 mt-1">Times acima de 20 pessoas</p>
+          <p class="mt-4 text-3xl font-extrabold text-slate-900">Sob consulta</p>
+          <ul class="mt-4 space-y-2 text-sm text-slate-600 flex-1">
+            <li>✓ Tudo do Team</li>
+            <li>✓ Suporte dedicado</li>
+          </ul>
+          <button class="mt-6 w-full border border-slate-300 hover:bg-slate-50 text-slate-700 font-semibold px-4 py-2.5 rounded-lg transition-colors">
+            Falar com vendas
+          </button>
+          <p class="spec text-center">w-full · px-4 py-2.5</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== FORMULÁRIO / CONTATO ===================== -->
+  <section id="contato" class="max-w-6xl mx-auto px-6 py-16">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+      <div>
+        <h2 class="text-3xl font-bold text-slate-900">Fale com o time</h2>
+        <p class="mt-3 text-slate-600 max-w-md">
+          Preencha o formulário — a largura de cada campo aqui não é
+          acidente: ela sinaliza o tamanho esperado do conteúdo.
+        </p>
+      </div>
+
+      <form class="bg-white border border-slate-200 rounded-2xl shadow-sm p-6 sm:p-8 space-y-5">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label for="nome" class="block text-sm font-medium text-slate-700 mb-1.5">Nome</label>
+            <input id="nome" type="text" placeholder="Maria Silva"
+                   class="w-full border border-slate-300 rounded-lg px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+            <p class="spec">w-full — nome pode ser longo, campo ocupa a coluna toda</p>
+          </div>
+          <div>
+            <label for="telefone" class="block text-sm font-medium text-slate-700 mb-1.5">Telefone</label>
+            <input id="telefone" type="tel" placeholder="(11) 99999-0000"
+                   class="w-full border border-slate-300 rounded-lg px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+            <p class="spec">w-full também, mas o conteúdo é curto e previsível</p>
+          </div>
+        </div>
+
+        <div>
+          <label for="email" class="block text-sm font-medium text-slate-700 mb-1.5">E-mail corporativo</label>
+          <input id="email" type="email" placeholder="voce@empresa.com"
+                 class="w-full border border-slate-300 rounded-lg px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+        </div>
+
+        <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
+          <div class="col-span-2 sm:col-span-1">
+            <label for="cupom" class="block text-sm font-medium text-slate-700 mb-1.5">Cupom</label>
+            <input id="cupom" type="text" placeholder="ORBIT10" maxlength="8"
+                   class="w-28 border border-slate-300 rounded-lg px-3 py-2.5 text-sm uppercase focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+            <p class="spec">w-28 (7rem) — largura fixa e pequena: sabemos que nunca passa de ~8 caracteres</p>
+          </div>
+          <div>
+            <label for="cep" class="block text-sm font-medium text-slate-700 mb-1.5">CEP</label>
+            <input id="cep" type="text" placeholder="00000-000"
+                   class="w-full border border-slate-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+          </div>
+          <div>
+            <label for="pessoas-form" class="block text-sm font-medium text-slate-700 mb-1.5">Pessoas</label>
+            <input id="pessoas-form" type="number" placeholder="5" min="1"
+                   class="w-full border border-slate-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+          </div>
+        </div>
+
+        <div>
+          <label for="email-invalido" class="block text-sm font-medium text-slate-700 mb-1.5">
+            E-mail (exemplo de erro de validação)
+          </label>
+          <input id="email-invalido" type="email" value="maria@@empresa"
+                 class="w-full border border-red-400 bg-red-50/50 rounded-lg px-3.5 py-2.5 text-sm text-red-900 focus:outline-none focus:ring-2 focus:ring-red-400">
+          <p class="mt-1.5 text-xs text-red-600">Formato de e-mail inválido.</p>
+          <p class="spec">border-red-400 + bg-red-50/50 — mesmo componente, estado de erro só muda a cor</p>
+        </div>
+
+        <div>
+          <label for="plano-atual" class="block text-sm font-medium text-slate-700 mb-1.5">Plano atual (bloqueado)</label>
+          <input id="plano-atual" type="text" value="Team — R$ 49/mês" disabled
+                 class="w-full border border-slate-200 bg-slate-100 text-slate-400 rounded-lg px-3.5 py-2.5 text-sm cursor-not-allowed">
+          <p class="spec">disabled + bg-slate-100 text-slate-400 — sinaliza "não editável" sem precisar de texto extra</p>
+        </div>
+
+        <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-4 py-3 rounded-lg shadow-sm transition-colors">
+          Enviar mensagem
+        </button>
+      </form>
+    </div>
+  </section>
+
+  <!-- ===================== RODAPÉ ===================== -->
+  <footer class="border-t border-slate-200 py-8">
+    <div class="max-w-6xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-sm text-slate-500">
+      <p>© 2026 Orbit. Página de exemplo para a aula de Frameworks CSS.</p>
+      <p class="text-slate-400">
+        Explicação completa das classes em
+        <code>../aula-frameworks-css/tailwind.md</code>
+      </p>
+    </div>
+  </footer>
+
+</body>
+</html>
