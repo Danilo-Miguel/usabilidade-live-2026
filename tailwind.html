@@ -1,0 +1,155 @@
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Aula Taiwind CSS</title>
+        <script src="https://cdn.tailwindcss.com"></script>
+        
+        <style>
+
+        .explicacao {
+        background: #fef9c3;
+        border-left: 4px solid #eab308;
+        padding: 0.75rem 1rem;
+        margin-bottom: 1rem;
+        font-size: 0.9rem;
+        }
+        .explicacao code { background: #00000010; padding: 0 4px; }
+        section { border-bottom: 2px dashed #ccc; padding: 2rem 0; }
+        </style>
+    </head>
+
+    <body class="text-gray-800">
+
+    <nav class="flex items-center justify-between bg-gray-900 text-white px-4 py-3 mb-8">
+
+    <span class="font-bold text-lg">Aula Tailwind</span>
+
+    <ul class="hidden md:flex gap-6"></ul>
+        <li><a href="#glossario" class="hover:text-blue-400">Glossário</a></li>
+        <li><a href="#grid" class="hover:text-blue-400">Grid</a></li>
+        <li><a href="#componentes" class="hover:text-blue-400">Componentes</a></li>
+        <li><a href="#estados" class="hover:text-blue-400">Estados</a></li>
+    </ul>
+
+    </nav>
+    <div class="container mx-auto px-4">
+    <section id="componentes">
+        <h2 class="text-2xl font-bold mb-4">4. Componentes montados com utilitários</h2>
+
+        <h4 class="text-lg font-semibold">4.1 Botões</h4>
+        <div class="explicacao">
+            Não existe <code>.btn</code> pronto. O "botão" é só um
+            <code>&lt;button&gt;</code> com padding, cor de fundo, cor de texto e
+            cantos arredondados — cada um definido por uma classe utilitária
+            separada.
+        </div>
+        <button type="button" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded mr-2">
+            Primário
+        </button>
+        <button type="button" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded mr-2">
+            Sucesso
+        </button>
+        <button type="button" class="border-2 border-red-600 text-red-600 hover:bg-red-600 hover:text-white px-4 py-2 rounded mr-2">
+            Outline
+        </button>
+        <button type="button" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 text-lg rounded mr-2">
+            Grande
+        </button>
+        <button type="button" class="bg-blue-600 hover:bg-blue-700 text-white px-2 py-1 text-sm rounded">
+            Pequeno
+        </button>
+
+        <h4 class="text-lg font-semibold mt-6">4.2 "Card"</h4>
+        <div class="explicacao">
+            Comparando com o Bootstrap (<code>class="card"</code> pronto): aqui
+            juntamos <code>rounded-lg</code> (cantos), <code>shadow-md</code>
+            (sombra) e <code>overflow-hidden</code> (para a borda arredondada
+            "cortar" a imagem) para chegar no mesmo resultado visual.
+        </div>
+        <div class="max-w-sm rounded-lg shadow-md overflow-hidden bg-white border">
+            <div class="p-4">
+            <h5 class="text-lg font-bold mb-2">Título do card</h5>
+            <p class="text-gray-600 mb-4">
+                Um pouco de texto de exemplo dentro do corpo do card.
+            </p>
+            <a href="#" class="inline-block bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">
+                Ver mais
+            </a>
+            </div>
+        </div>
+
+        <h4 class="text-lg font-semibold mt-6">4.3 "Alerts"</h4>
+        <div class="explicacao">
+            No Bootstrap, <code>.alert-success</code> já trazia fundo, borda e
+            texto combinando. Aqui escolhemos os 3 tons manualmente dentro da
+            mesma família de cor (ex.: fundo <code>green-100</code>, texto
+            <code>green-800</code>, borda <code>green-300</code>).
+        </div>
+        <div class="bg-green-100 text-green-800 border border-green-300 px-4 py-3 rounded mb-2" role="alert">
+            Sucesso! Operação concluída.
+        </div>
+        <div class="bg-yellow-100 text-yellow-800 border border-yellow-300 px-4 py-3 rounded mb-2" role="alert">
+            Atenção! Confira os dados.
+        </div>
+        <div class="bg-red-100 text-red-800 border border-red-300 px-4 py-3 rounded" role="alert">
+            Erro! Algo deu errado.
+        </div>
+
+        <h4 class="text-lg font-semibold mt-6">4.4 "Badges"</h4>
+        <p>
+            Notificações
+            <span class="bg-gray-600 text-white text-xs px-2 py-1 rounded-full">4</span>
+            Status:
+            <span class="bg-green-600 text-white text-xs px-2 py-1 rounded-full">Ativo</span>
+        </p>
+
+        <h4 class="text-lg font-semibold mt-6">4.5 Formulário</h4>
+        <div class="explicacao">
+            <code>for</code>/<code>id</code> continuam sendo HTML puro, iguais
+            ao exemplo do Bootstrap. A diferença é só visual: em vez de
+            <code>.form-control</code> pronto, definimos borda, padding e cantos
+            na mão, e usamos <code>focus:</code> para o contorno azul ao clicar.
+        </div>
+        <form>
+            <div class="mb-4">
+            <label for="email-tw" class="block font-medium mb-1">E-mail</label>
+            <input type="email" id="email-tw" placeholder="voce@exemplo.com"
+                    class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+            <div class="mb-4">
+            <label for="senha-tw" class="block font-medium mb-1">Senha</label>
+            <input type="password" id="senha-tw"
+                    class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+            <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">
+            Enviar
+            </button>
+        </form>
+        </section>
+
+
+        <section id="flex">
+        <h2 class="text-2xl font-bold mb-4">5. Flexbox</h2>
+        <div class="explicacao">
+            Praticamente idêntico ao Bootstrap na ideia, só que os nomes seguem o
+            CSS puro mais de perto: <code>justify-between</code> em vez de
+            <code>justify-content-between</code>, <code>items-center</code> em
+            vez de <code>align-items-center</code>.
+        </div>
+        <div class="flex justify-between items-center bg-gray-100 border p-3 gap-3 rounded">
+            <div class="bg-blue-600 text-white p-2 rounded">Item 1</div>
+            <div class="bg-blue-600 text-white p-2 rounded">Item 2</div>
+            <div class="bg-blue-600 text-white p-2 rounded">Item 3</div>
+        </div>
+        </section>
+
+
+    </div>
+
+
+
+        
+    </body>
+    </html>
