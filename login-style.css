@@ -1,0 +1,46 @@
+
+.login-card {
+  /* centraliza o formulário e limita sua largura */
+  max-width: 340px;
+  margin: 40px auto;
+  padding: 28px;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(0,0,0,.12);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.login-card label {
+  font-size: 13px;
+  font-weight: 600;
+  margin-top: 8px;
+}
+
+.login-card input {
+  padding: 10px 12px;
+  border: 1px solid #d8d0be;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+.login-card input:focus {
+  outline: none;
+  border-color: #1E4B41;    /* pseudo-classe :focus */
+}
+
+.login-card button {
+  background: #1E4B41;
+  color: #fff;
+  border: none;
+  padding: 12px;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.login-card button:hover {
+  background: #163b33;    /* tom mais escuro no hover */
+}
