@@ -1,0 +1,25 @@
+body {
+  font-family: system-ui, sans-serif;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 16px;
+  background: #fff;
+  color: #1a1a1a;
+}
+label { display: block; font-weight: bold; margin-bottom: 8px; }
+input, button { min-height: 48px; font-size: 1rem; padding: 0 16px; }
+button { background: #0b6b3a; color: #fff; border: 0; border-radius: 6px; cursor: pointer; }
+:focus-visible { outline: 3px solid #1d4ed8; outline-offset: 3px; }
+
+ul {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 16px;
+}
+li { background: #f3f4f6; padding: 8px; border-radius: 8px; }
+li img { width: 100%; border-radius: 6px; }
+li h2 { font-size: 1rem; margin: 8px 0 4px; }
+li p { margin: 0; color: #4b5563; }
+li audio { width: 100%; margin-top: 8px; }

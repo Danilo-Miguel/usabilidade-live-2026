@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Busca de Artistas</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>Busca de Artistas</h1>
+
+  <form id="form" role="search">
+    <label for="busca">Nome do artista</label>
+    <input id="busca" type="search" required placeholder="Ex.: Gilberto Gil">
+    <button type="submit">Buscar</button>
+  </form>
+
+  <!-- aria-live: o leitor de tela anuncia sozinho o que for escrito aqui -->
+  <p id="status" aria-live="polite"></p>
+
+  <ul id="artistas"></ul>
+
+  <h2 id="titulo-albuns" tabindex="-1" hidden></h2>
+  <ul id="albuns"></ul>
+
+  <script src="script.js"></script>
+</body>
+</html>
