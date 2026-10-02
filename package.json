@@ -1,0 +1,24 @@
+{
+  "name": "usabilidade-live-2026-",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Danilo-Miguel/usabilidade-live-2026-.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Danilo-Miguel/usabilidade-live-2026-/issues"
+  },
+  "homepage": "https://github.com/Danilo-Miguel/usabilidade-live-2026-#readme",
+  "dependencies": {
+    "cowsay": "^1.6.0"
+  }
+}
