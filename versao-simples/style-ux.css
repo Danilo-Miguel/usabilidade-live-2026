@@ -1,0 +1,418 @@
+/* =====================================================================
+   style-ux.css — versão do layout focada em experiência do usuário
+   Baseado nas 10 heurísticas de Nielsen (H1 a H10) e na WCAG 2.2.
+   Usado pelo arquivo index-ux.html. O style.css original não foi alterado.
+
+   Heurísticas citadas nos comentários:
+   H1  Visibilidade do status do sistema
+   H2  Correspondência entre o sistema e o mundo real
+   H3  Controle e liberdade do usuário
+   H4  Consistência e padrões
+   H5  Prevenção de erros
+   H6  Reconhecer em vez de lembrar
+   H7  Flexibilidade e eficiência de uso
+   H8  Estética e design minimalista
+   H9  Ajudar a reconhecer, diagnosticar e corrigir erros
+   H10 Ajuda e documentação
+   ===================================================================== */
+
+
+/* ---------------------------------------------------------------------
+   1. VARIÁVEIS (tokens de design)
+   Guardar cores e medidas em um só lugar garante consistência (H4).
+   --------------------------------------------------------------------- */
+
+/* :root é o elemento <html>; variáveis declaradas aqui valem para a página toda */
+:root {
+  /* Avisa o navegador que a página tem tema claro e escuro (barras de rolagem, campos nativos) */
+  color-scheme: light dark;
+  /* Cor de fundo da página: cinza bem claro, cansa menos a vista que branco puro */
+  --fundo: #f8fafc;
+  /* Cor de fundo das "superfícies" (cards e formulário): branco para destacar do fundo */
+  --superficie: #ffffff;
+  /* Cor do texto principal: contraste ≈ 17:1 sobre o fundo (WCAG 1.4.3 pede no mínimo 4.5:1) */
+  --texto: #1a1a1a;
+  /* Cor do texto secundário (artista/álbum): contraste ≈ 7.5:1 sobre branco */
+  --texto-suave: #4b5563;
+  /* Cor de destaque (botão): verde escuro, contraste ≈ 6.6:1 com texto branco */
+  --primaria: #0b6b3a;
+  /* Verde mais escuro para quando o mouse passa no botão (feedback visual, H1) */
+  --primaria-hover: #085a30;
+  /* Cor do texto que fica em cima da cor primária */
+  --texto-na-primaria: #ffffff;
+  /* Cor das bordas: contraste ≈ 4.8:1, acima de 3:1 exigido para componentes (WCAG 1.4.11) */
+  --borda: #6b7280;
+  /* Borda bem leve, só decorativa, para separar os cards do fundo */
+  --borda-suave: #e5e7eb;
+  /* Cor do contorno de foco: azul com contraste > 3:1 (WCAG 2.4.7 e 2.4.13) */
+  --foco: #1d4ed8;
+  /* Cor de erro do campo: vermelho escuro, contraste ≈ 6.5:1 */
+  --erro: #b91c1c;
+  /* Raio de arredondamento padrão, usado em todos os componentes (H4) */
+  --raio: 12px;
+  /* Sombra suave dos cards: dá profundidade sem poluir (H8) */
+  --sombra: 0 1px 3px rgb(0 0 0 / 0.08), 0 4px 12px rgb(0 0 0 / 0.06);
+  /* Duração padrão das animações: curta para não atrasar o usuário (H7) */
+  --transicao: 150ms ease-out;
+}
+
+/* Tema escuro automático: só é aplicado se o sistema do usuário estiver no modo escuro (H7) */
+@media (prefers-color-scheme: dark) {
+  /* Redefine as mesmas variáveis; o resto do CSS não muda (H4) */
+  :root {
+    /* Fundo azul-escuro em vez de preto puro, que causa mais cansaço visual */
+    --fundo: #0f172a;
+    /* Superfície um pouco mais clara que o fundo para os cards se destacarem */
+    --superficie: #1e293b;
+    /* Texto quase branco: contraste ≈ 16:1 sobre o fundo */
+    --texto: #f1f5f9;
+    /* Texto secundário claro: contraste ≈ 10:1 sobre a superfície */
+    --texto-suave: #cbd5e1;
+    /* Verde claro para o botão no escuro */
+    --primaria: #4ade80;
+    /* Verde ainda mais claro no hover */
+    --primaria-hover: #86efac;
+    /* Texto escuro sobre o verde claro: contraste ≈ 8.6:1 */
+    --texto-na-primaria: #052e16;
+    /* Borda clara: contraste ≈ 5.7:1 sobre a superfície (WCAG 1.4.11) */
+    --borda: #94a3b8;
+    /* Borda decorativa discreta no escuro */
+    --borda-suave: #334155;
+    /* Azul claro para o foco, visível sobre fundo escuro */
+    --foco: #93c5fd;
+    /* Vermelho claro para erro, legível sobre fundo escuro */
+    --erro: #fca5a5;
+    /* No escuro a sombra quase não aparece, então ela fica mais forte */
+    --sombra: 0 1px 3px rgb(0 0 0 / 0.4), 0 4px 12px rgb(0 0 0 / 0.3);
+  }
+}
+
+
+/* ---------------------------------------------------------------------
+   2. BASE DA PÁGINA
+   --------------------------------------------------------------------- */
+
+/* Faz largura e altura incluírem padding e borda: evita elementos "estourando" o layout */
+*,
+*::before,
+*::after {
+  /* box-sizing: border-box = o tamanho declarado já conta o padding e a borda */
+  box-sizing: border-box;
+}
+
+/* Estilo geral do corpo da página */
+body {
+  /* Usa a fonte do sistema do usuário: familiar e carrega instantaneamente (H2) */
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  /* Tamanho em rem respeita o zoom e a configuração de fonte do usuário (WCAG 1.4.4) */
+  font-size: 1rem;
+  /* Espaço entre linhas de 1.5 facilita a leitura (WCAG 1.4.12) */
+  line-height: 1.5;
+  /* Largura máxima: linhas muito longas são difíceis de ler */
+  max-width: 1100px;
+  /* Centraliza o conteúdo na tela */
+  margin: 0 auto;
+  /* Espaço interno: 16px no celular, cresce até 32px em telas grandes */
+  padding: 0 clamp(16px, 4vw, 32px) 48px;
+  /* Cor de fundo vinda da variável (muda sozinha no tema escuro) */
+  background: var(--fundo);
+  /* Cor do texto vinda da variável */
+  color: var(--texto);
+}
+
+/* Título principal da página */
+h1 {
+  /* Tamanho fluido: 1.75rem no celular até 2.5rem no desktop */
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
+  /* Linhas mais juntas em título grande ficam mais bonitas */
+  line-height: 1.2;
+  /* Espaço acima e abaixo do título */
+  margin: 32px 0 16px;
+  /* Letras levemente mais juntas para títulos grandes (estética, H8) */
+  letter-spacing: -0.02em;
+}
+
+
+/* ---------------------------------------------------------------------
+   3. FORMULÁRIO DE BUSCA
+   --------------------------------------------------------------------- */
+
+/* O formulário fica grudado no topo ao rolar: dá para buscar de novo a qualquer momento (H3, H7) */
+form {
+  /* sticky = rola normalmente até encostar no topo, depois fica parado ali */
+  position: sticky;
+  /* Distância do topo da tela onde ele "gruda" */
+  top: 0;
+  /* Fica por cima dos cards ao rolar */
+  z-index: 10;
+  /* Organiza rótulo, campo e botão em grade */
+  display: grid;
+  /* Duas colunas: o campo ocupa o espaço que sobra, o botão só o necessário */
+  grid-template-columns: 1fr auto;
+  /* Espaço entre rótulo, campo e botão */
+  gap: 8px 12px;
+  /* Espaço interno do formulário */
+  padding: 16px;
+  /* Margem abaixo, separando da mensagem de status */
+  margin-bottom: 8px;
+  /* Fundo sólido para os cards não aparecerem por trás quando ele grudar no topo */
+  background: var(--superficie);
+  /* Cantos arredondados no padrão da página (H4) */
+  border-radius: var(--raio);
+  /* Sombra para mostrar que ele está "acima" do conteúdo */
+  box-shadow: var(--sombra);
+}
+
+/* Rótulo "Nome do artista": sempre visível, não some como o placeholder (H6, WCAG 3.3.2) */
+label {
+  /* O rótulo ocupa as duas colunas da grade (linha inteira) */
+  grid-column: 1 / -1;
+  /* Negrito para indicar que é o nome do campo */
+  font-weight: 600;
+}
+
+/* Regras compartilhadas pelo campo e pelo botão (H4) */
+input,
+button {
+  /* Altura mínima de 48px: área de toque confortável (WCAG 2.5.8 pede no mínimo 24px) */
+  min-height: 48px;
+  /* Herda a fonte da página; por padrão campos usam outra fonte */
+  font: inherit;
+  /* Espaço interno nas laterais */
+  padding: 0 16px;
+  /* Mesmo arredondamento do resto da página (H4) */
+  border-radius: 8px;
+}
+
+/* Campo de texto da busca */
+input {
+  /* Ocupa toda a largura da sua coluna */
+  width: 100%;
+  /* Borda de 2px com contraste suficiente para enxergar onde é o campo (WCAG 1.4.11) */
+  border: 2px solid var(--borda);
+  /* Fundo do campo igual ao da superfície */
+  background: var(--superficie);
+  /* Cor do texto digitado */
+  color: var(--texto);
+}
+
+/* Texto de exemplo "Ex.: Gilberto Gil" dentro do campo */
+input::placeholder {
+  /* Usa a cor secundária, que ainda tem contraste suficiente para leitura (WCAG 1.4.3) */
+  color: var(--texto-suave);
+  /* Alguns navegadores deixam o placeholder transparente; isso garante a cor certa */
+  opacity: 1;
+}
+
+/* Campo inválido (ex.: enviado vazio), só depois que o usuário interagiu com ele (H5, H9) */
+input:user-invalid {
+  /* Borda vermelha indica o erro */
+  border-color: var(--erro);
+  /* Borda mais grossa: o erro não é indicado só pela cor (WCAG 1.4.1) */
+  border-width: 3px;
+}
+
+/* Botão "Buscar" */
+button {
+  /* Fundo com a cor de destaque: é a ação principal da tela */
+  background: var(--primaria);
+  /* Texto com contraste adequado sobre o fundo do botão */
+  color: var(--texto-na-primaria);
+  /* Negrito para reforçar que é a ação principal */
+  font-weight: 600;
+  /* Borda transparente: some normalmente, mas aparece no modo de alto contraste */
+  border: 2px solid transparent;
+  /* Cursor de "mãozinha": indica que é clicável (H2, H4) */
+  cursor: pointer;
+  /* Anima a troca de cor e o "afundar" do botão */
+  transition: background-color var(--transicao), transform var(--transicao);
+}
+
+/* Mouse sobre o botão: muda de cor para mostrar que ele responde (H1) */
+button:hover {
+  /* Cor um pouco diferente da normal */
+  background: var(--primaria-hover);
+}
+
+/* Botão sendo clicado: afunda levemente, como um botão físico (H2) */
+button:active {
+  /* Diminui o botão em 3% enquanto está pressionado */
+  transform: scale(0.97);
+}
+
+/* Contorno de foco visível só para quem navega pelo teclado (WCAG 2.4.7) */
+:focus-visible {
+  /* Contorno grosso de 3px, bem visível */
+  outline: 3px solid var(--foco);
+  /* Afasta o contorno do elemento para não ficar colado na borda */
+  outline-offset: 3px;
+}
+
+/* Em telas pequenas (até 480px), o botão vai para baixo do campo */
+@media (max-width: 480px) {
+  /* Muda a grade do formulário */
+  form {
+    /* Uma coluna só: rótulo, campo e botão empilhados (WCAG 1.4.10, sem rolagem lateral) */
+    grid-template-columns: 1fr;
+  }
+}
+
+
+/* ---------------------------------------------------------------------
+   4. MENSAGEM DE STATUS (carregando / vazio / sucesso / erro)
+   --------------------------------------------------------------------- */
+
+/* Área onde o script escreve o estado da busca (H1) */
+#status {
+  /* Altura reservada mesmo vazia: o conteúdo não "pula" quando a mensagem aparece */
+  min-height: 1.5em;
+  /* Espaço acima e abaixo da mensagem */
+  margin: 16px 0;
+  /* Cor secundária: informa sem competir com os resultados (H8) */
+  color: var(--texto-suave);
+  /* Leve destaque para ser notada */
+  font-weight: 500;
+}
+
+
+/* ---------------------------------------------------------------------
+   5. LISTA DE RESULTADOS (grade de cards)
+   --------------------------------------------------------------------- */
+
+/* A lista <ul id="lista"> vira uma grade responsiva */
+#lista {
+  /* Remove as bolinhas da lista */
+  list-style: none;
+  /* Remove o recuo padrão da lista */
+  padding: 0;
+  /* Remove a margem padrão */
+  margin: 0;
+  /* Usa CSS Grid para organizar os cards */
+  display: grid;
+  /* Quantos cards de no mínimo 180px couberem por linha; reorganiza sozinho em qualquer tela */
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  /* Espaço entre os cards */
+  gap: 20px;
+}
+
+/* Cada card de música (<li> criado pelo script) */
+#lista li {
+  /* Coloca o conteúdo do card em coluna */
+  display: flex;
+  /* Direção vertical: imagem, título, info e áudio um abaixo do outro */
+  flex-direction: column;
+  /* Espaço entre os itens internos */
+  gap: 4px;
+  /* Espaço interno do card */
+  padding: 12px;
+  /* Fundo do card */
+  background: var(--superficie);
+  /* Borda leve para separar do fundo */
+  border: 1px solid var(--borda-suave);
+  /* Mesmo arredondamento da página (H4) */
+  border-radius: var(--raio);
+  /* Sombra suave dá aparência de cartão (H2) */
+  box-shadow: var(--sombra);
+  /* Anima o leve "levantar" do card */
+  transition: transform var(--transicao), box-shadow var(--transicao);
+}
+
+/* Mouse sobre o card: ele sobe um pouco, mostrando que é interativo (H1) */
+#lista li:hover {
+  /* Move o card 3px para cima */
+  transform: translateY(-3px);
+}
+
+/* Quando o player dentro do card recebe foco pelo teclado, o card inteiro fica destacado (H1, WCAG 2.4.7) */
+#lista li:has(:focus-visible) {
+  /* Borda com a cor de foco mostra em qual música o usuário está */
+  border-color: var(--foco);
+}
+
+/* Capa do álbum */
+#lista li img {
+  /* Ocupa toda a largura do card */
+  width: 100%;
+  /* Sempre quadrada: o espaço já fica reservado e a página não "pula" ao carregar */
+  aspect-ratio: 1 / 1;
+  /* Recorta a imagem para preencher o quadrado sem distorcer */
+  object-fit: cover;
+  /* Cantos arredondados combinando com o card */
+  border-radius: 8px;
+  /* Cor de fundo enquanto a imagem ainda está carregando (H1) */
+  background: var(--borda-suave);
+  /* Espaço abaixo da capa */
+  margin-bottom: 8px;
+}
+
+/* Nome da música */
+#lista li h2 {
+  /* Tamanho próximo ao texto normal: são muitos cards, título grande poluiria (H8) */
+  font-size: 1.0625rem;
+  /* Linhas mais juntas no título */
+  line-height: 1.3;
+  /* Remove a margem padrão do h2 */
+  margin: 0;
+  /* Necessário para o corte em 2 linhas funcionar */
+  display: -webkit-box;
+  /* Mostra no máximo 2 linhas; o leitor de tela continua lendo o nome completo */
+  -webkit-line-clamp: 2;
+  /* Também necessário para o corte em linhas */
+  -webkit-box-orient: vertical;
+  /* Esconde o que passar de 2 linhas, mantendo os cards alinhados (H8) */
+  overflow: hidden;
+}
+
+/* Artista · Álbum */
+#lista li p {
+  /* Remove a margem padrão do parágrafo */
+  margin: 0;
+  /* Cor secundária: informação de apoio ao título */
+  color: var(--texto-suave);
+  /* Um pouco menor que o título, criando hierarquia visual */
+  font-size: 0.9375rem;
+}
+
+/* Player de áudio */
+#lista li audio {
+  /* Ocupa toda a largura do card */
+  width: 100%;
+  /* margin-top: auto empurra o player para o fim do card: todos ficam alinhados na mesma altura (H4) */
+  margin-top: auto;
+  /* Pequeno respiro acima do player */
+  padding-top: 8px;
+}
+
+
+/* ---------------------------------------------------------------------
+   6. PREFERÊNCIAS DE ACESSIBILIDADE DO SISTEMA
+   --------------------------------------------------------------------- */
+
+/* Usuário pediu ao sistema para reduzir movimento (labirintite, enjoo, distração) — WCAG 2.3.3 */
+@media (prefers-reduced-motion: reduce) {
+  /* Vale para todos os elementos */
+  *,
+  *::before,
+  *::after {
+    /* Desliga as transições */
+    transition: none !important;
+    /* Desliga as animações */
+    animation: none !important;
+  }
+
+  /* Cancela o "levantar" do card */
+  #lista li:hover {
+    /* Sem deslocamento */
+    transform: none;
+  }
+}
+
+/* Modo de alto contraste do Windows: o sistema força as cores do usuário */
+@media (forced-colors: active) {
+  /* Garante que botão e cards tenham borda visível, já que fundos e sombras somem nesse modo */
+  button,
+  #lista li {
+    /* Usa a cor de borda do próprio sistema */
+    border: 2px solid ButtonText;
+  }
+}

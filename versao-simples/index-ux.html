@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Busca de Músicas</title>
+  <!-- Mesma página do index.html, mas usando o CSS com foco em UX (Nielsen + WCAG) -->
+  <link rel="stylesheet" href="style-ux.css">
+</head>
+<body>
+  <h1>Busca de Músicas</h1>
+
+  <form id="form" role="search">
+    <label for="busca">Nome do artista</label>
+    <input id="busca" type="search" required placeholder="Ex.: Gilberto Gil">
+    <button type="submit">Buscar</button>
+  </form>
+
+  <!-- aria-live: o leitor de tela anuncia sozinho o que for escrito aqui -->
+  <p id="status" aria-live="polite"></p>
+
+  <ul id="lista"></ul>
+
+  <script src="script.js"></script>
+</body>
+</html>
