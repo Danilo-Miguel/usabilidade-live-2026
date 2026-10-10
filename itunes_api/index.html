@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Busca de Músicas</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <h1>Busca de Músicas</h1>
+
+    <form id="form" role="search">
+        <label for="busca">Nome do artista:</label>
+        <input id="busca" name="busca" type="search" placeholder="Digite o nome do artista"> 
+        <button type="submit">Buscar</button>
+    </form>
+
+    <p id="status" aria-live="polite"></p>
+    <ul id="lista"></ul>
+
+    <script src="js/script.js"></script>
+
+</body>
+</html>
