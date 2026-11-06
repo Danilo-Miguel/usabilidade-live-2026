@@ -1,0 +1,3 @@
+/* Esta única linha liga o Tailwind v4. No build, o plugin troca por um CSS
+   contendo apenas as classes realmente usadas nos arquivos .jsx. */
+@import "tailwindcss";
