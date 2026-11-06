@@ -1,9 +1,8 @@
-// vite.config.js — configuração do Vite (servidor de desenvolvimento e build).
+import react from '@vitejs/plugin-react'
 import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react' // transforma JSX em JS e habilita o hot reload (HMR)
-import tailwindcss from '@tailwindcss/vite' // varre os .jsx e gera só o CSS das classes usadas
+import tailwindcss from '@tailwindcss/vite'
 
+// https://vite.dev/config/
 export default defineConfig({
-  // Plugins são extensões que adicionam capacidades ao Vite.
-  plugins: [react(), tailwindcss()],
+  plugins: [react()],
 })
